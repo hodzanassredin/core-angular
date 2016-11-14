@@ -20,12 +20,13 @@ ToDo:
 4. https
 5. Remove mongo api from repositories and entities
 6. add tests
+7. More correct angular js modularization. Remove data loading from ctors.
 
 Steps to run
 
-1. Install dotnet core: https://www.microsoft.com/net/core
-2. Install latest nodejs and npm: https://nodejs.org/en/download/
-3. Change mongo db connection string in .\Source\Books\appsettings.json
+Install dotnet core: https://www.microsoft.com/net/core
+Install latest nodejs and npm: https://nodejs.org/en/download/
+Change mongo db connection string in .\Source\Books\appsettings.json
 
 
 ```
@@ -36,7 +37,7 @@ Steps to run
 ```
 
 
-4. Open commandline and run:
+Open commandline and run:
 
 
 ```
@@ -50,7 +51,7 @@ Steps to run
 ```
 
 
-5. Open browser: http://localhost:5000/
+Open browser: http://localhost:5000/
 
 
         
