@@ -3,8 +3,7 @@ using Xunit;
 
 namespace Books.Tests
 {
-    // see example explanation on xUnit.net website:
-    // https://xunit.github.io/docs/getting-started-dotnet-core.html
+
     public class PagedTests
     {
         [Fact]
