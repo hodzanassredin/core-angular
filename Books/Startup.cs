@@ -9,20 +9,18 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Ninject;
-using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using Ninject.Activation;
 using Ninject.Infrastructure.Disposal;
 using Microsoft.AspNetCore.Http;
 using MissingDIExtensions;
 using Microsoft.AspNetCore.Mvc.ViewFeatures.Internal;
-using Books.Domain.Services;
 using Books.Domain;
 using Books.Controllers;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Microsoft.Extensions.Options;
+using Books.Domain.MongoImpl;
+using Books.Domain.Repositories;
 
 namespace Books
 {
@@ -149,8 +147,8 @@ namespace Books
 
             //config.Bind<IUserService>().To<AspNetUserService>().InScope(RequestScope);
             config.Bind<IDataContext>().ToConstant(dataContext).InSingletonScope();
-            config.Bind<ISearchService>().To<MongoSearchService>().InScope(RequestScope);
-            config.Bind<IUserService>().To<MongoUserService>().InScope(RequestScope);
+            config.Bind<IUserRepository>().ToConstant(dataContext.Users).InSingletonScope();
+            config.Bind<IBookRepository>().ToConstant(dataContext.Books).InSingletonScope();
             //config.Bind<CustomMiddleware>().ToSelf();
 
             // Cross-wire required framework services

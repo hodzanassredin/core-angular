@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Books.Domain.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MongoDB.Bson;
-namespace Books.Domain
+namespace Books.Domain.Repositories
 {
     //todo rethink generalizationL remode dependencies on mongo details(filters, ids)
     public interface IRepository<T,TId>

@@ -5,8 +5,10 @@ using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Bson.Serialization.Attributes;
+using Books.Domain.Repositories;
+using Books.Domain.Models;
 
-namespace Books.Domain
+namespace Books.Domain.MongoImpl
 {
     public abstract class MongoEntity {
         [BsonRepresentation(BsonType.ObjectId)]
@@ -15,7 +17,7 @@ namespace Books.Domain
     public class MongoRepository<T> : IRepository<T, string>
         where T : MongoEntity
     {
-        private IMongoCollection<T> collection;
+        protected IMongoCollection<T> collection;
         public MongoRepository(IMongoCollection<T> collection)
         {
             this.collection = collection;
@@ -66,21 +68,6 @@ namespace Books.Domain
             return this.collection.AsQueryable();
         }
 
-        public async Task<Paged<T>> Search(FilterDefinition<T> filter, int pageSize = 10, int page = 0)
-        {
-            var query = this.collection.Find(filter);
-            var totalTask = query.CountAsync();
-            var itemsTask = query.Skip(page * pageSize)
-                                 .Limit(pageSize)
-                                 .ToListAsync();
-            await Task.WhenAll(totalTask, itemsTask);
-            return new Paged<T>
-            {
-                TotalItems = totalTask.Result,
-                Items = itemsTask.Result,
-                CurrentPage = page,
-                PageSize = pageSize
-            };
-        }
+        
     }
 }

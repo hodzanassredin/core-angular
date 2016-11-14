@@ -1,4 +1,4 @@
-using Books.Domain;
+using Books.Domain.Models;
 using Xunit;
 
 namespace Books.Tests

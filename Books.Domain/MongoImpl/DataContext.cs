@@ -7,13 +7,17 @@ using Books.Domain.Models;
 using MongoDB.Driver.Linq;
 using Books.Domain;
 using MongoDB.Bson;
+using Books.Domain.MongoImpl;
+using Books.Domain.Repositories;
 
-namespace Books.Domain
+namespace Books.Domain.MongoImpl
 {
     public class DataContext : IDataContext
     {
         MongoClient client;
         IMongoDatabase database;
+        IMongoCollection<Book> books;
+        IMongoCollection<User> users;
 
         public DataContext(string connectionString)
         {
@@ -21,16 +25,18 @@ namespace Books.Domain
 
             client = new MongoClient(connectionString);
             database = client.GetDatabase(con.DatabaseName);
+            books = database.GetCollection<Book>("Book");
+            users = database.GetCollection<User>("User");
         }
 
-        public IRepository<Book, string> Books
+        public IBookRepository Books
         {
-            get { return new MongoRepository<Book>(database.GetCollection<Book>("Book")); }
+            get { return new BookRepository(books); }
         }
 
-        public IRepository<User, string> Users
+        public IUserRepository Users
         {
-            get { return new MongoRepository<User>(database.GetCollection<User>("User")); }
+            get { return new UserRepository(users, books); }
         }
     }
 }

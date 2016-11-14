@@ -1,21 +1,22 @@
-﻿using System;
+﻿using Books.Domain.Models;
+using Books.Domain.Repositories;
+using MongoDB.Bson;
+using MongoDB.Driver;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Books.Domain.Models;
-using MongoDB.Driver.Linq;
-using MongoDB.Driver;
-using MongoDB.Bson;
 
-namespace Books.Domain.Services
+namespace Books.Domain.MongoImpl
 {
-    public class MongoSearchService : ISearchService
+    
+    public class BookRepository : MongoRepository<Book>, IBookRepository
     {
-        private readonly MongoRepository<Book> repo;
-        public MongoSearchService(IDataContext ctx)
+        public BookRepository(IMongoCollection<Book> coll) : base(coll)
         {
-            this.repo = (MongoRepository<Book>)ctx.Books;//todo remove dependency on mongofilters
+
         }
+
         public Task<Paged<Book>> Search(BookFilter filter)
         {
             var builder = Builders<Book>.Filter;
@@ -36,7 +37,7 @@ namespace Books.Domain.Services
             {
                 filters.Add(builder.Eq("Authors", new BsonRegularExpression(filter.Author)));
             }
-            return this.repo.Search(builder.And(filters), filter.PageSize, filter.Page);
+            return this.collection.SearchPaged(builder.And(filters), filter.PageSize, filter.Page);
         }
     }
 }

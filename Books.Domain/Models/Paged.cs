@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Books.Domain
+namespace Books.Domain.Models
 {
     /// <summary>
     /// Dto object for paged responses

@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson;
+﻿using Books.Domain.MongoImpl;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,8 @@ using System.Threading.Tasks;
 
 namespace Books.Domain.Models
 {
+    
+
     public class User : MongoEntity
     {
         public User()

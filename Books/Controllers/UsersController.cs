@@ -7,10 +7,9 @@ using System.Security.Claims;
 using Newtonsoft.Json;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.Extensions.Options;
-using Books.Domain.Services;
 using Microsoft.AspNetCore.Authorization;
 using Books.Domain.Models;
+using Books.Domain.Repositories;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -29,9 +28,9 @@ namespace Books.Controllers
     public class UsersController : Controller
     {
         private readonly TokenProviderOptions _options;
-        private readonly IUserService users;
+        private readonly IUserRepository users;
 
-        public UsersController(TokenProviderOptions opts, IUserService users)
+        public UsersController(TokenProviderOptions opts, IUserRepository users)
         {
             _options = opts;
             this.users = users;
@@ -39,8 +38,8 @@ namespace Books.Controllers
         [HttpPost("[action]")]
         public async Task<ActionResult> Login([FromBody] User user)
         {
-            var ok = await users.Login(user.Username, user.Password);
-            if (!ok)
+            user = await users.Login(user.Username, user.Password);
+            if (user == null)
             {
                 this.Response.StatusCode = 400;
                 return Content("Invalid username or password.");
@@ -79,7 +78,7 @@ namespace Books.Controllers
         [HttpPost("[action]")]
         public async Task<ActionResult> Register([FromBody] User user)
         {
-            var res = await users.Register(user.Username, user.Password);
+            var res = await users.Register(user);
             switch (res)
             {
                 case RegisterResult.BadPassword:
@@ -92,27 +91,35 @@ namespace Books.Controllers
             return await Login(user);
         }
 
-        private string CurrentUserName() {
-            return this.User.Claims.Single(x => x.Type == ClaimTypes.NameIdentifier).Value;
+        private Task<User> CurrentUser() {
+            var name = this.User.Claims.Single(x => x.Type == ClaimTypes.NameIdentifier).Value;
+            return users.GetByUserName(name);
         }
         [HttpGet("books")]
         [Authorize]
-        public Task<IEnumerable<Book>> Books()
+        public async Task<IEnumerable<Book>> Books()
         {
-            return users.GetRequests(CurrentUserName());
+            var u = await CurrentUser();
+            return await users.GetRequests(u);
         }
         [HttpPost("books")]
         [Authorize]
-        public Task CreateBookRequest([FromBody] Book book)
+        public async Task CreateBookRequest([FromBody] Book book)
         {
-            return users.Request(CurrentUserName(), book.Id);
+            var u = await CurrentUser();
+            if (u.Demands.Contains(book.Id)) return;
+            u.Demands.Add(book.Id);
+            await users.Update(u);
         }
 
         [HttpDelete("books/{bookId}")]
         [Authorize]
-        public Task CancelBookRequest(string bookId)
+        public async Task CancelBookRequest(string bookId)
         {
-            return users.Cancel(CurrentUserName(), bookId);
+            var u = await CurrentUser();
+            if (!u.Demands.Contains(bookId)) return;
+            u.Demands.Remove(bookId);
+            await users.Update(u);
         }
     }
 }
