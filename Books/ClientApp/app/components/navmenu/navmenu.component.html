@@ -1,0 +1,43 @@
+<div class='main-nav'>
+    <div class='navbar navbar-inverse'>
+        <div class='navbar-header'>
+            <button type='button' class='navbar-toggle' data-toggle='collapse' data-target='.navbar-collapse'>
+                <span class='sr-only'>Toggle navigation</span>
+                <span class='icon-bar'></span>
+                <span class='icon-bar'></span>
+                <span class='icon-bar'></span>
+            </button>
+            <a class='navbar-brand' [routerLink]="['/home']">Books(<span class='glyphicon glyphicon-user'></span> {{auth.userName()}})</a>
+        </div>
+        <div class='clearfix'></div>
+        <div class='navbar-collapse collapse'>
+            <ul class='nav navbar-nav'>
+                <li [routerLinkActive]="['link-active']">
+                    <a [routerLink]="['/home']">
+                        <span class='glyphicon glyphicon-home'></span> Home
+                    </a>
+                </li>
+                <li  *ngIf="auth.loggedIn()" [routerLinkActive]="['link-active']">
+                    <a [routerLink]="['/books-data']">
+                        <span class='glyphicon glyphicon-search'></span> Search
+                    </a>
+                </li>
+                <li *ngIf="auth.loggedIn()" [routerLinkActive]="['link-active']">
+                    <a [routerLink]="['/books-my']">
+                        <span class='glyphicon glyphicon-th-list'></span> My Books
+                    </a>
+                </li>
+                <li *ngIf="auth.loggedIn()">
+                    <a (click)="auth.logOut()">
+                        <span class='glyphicon glyphicon-log-out'></span> LogOut
+                    </a>
+                </li>
+                <li *ngIf="!auth.loggedIn()" [routerLinkActive]="['link-active']">
+                <a [routerLink]="['/login']">
+                    <span class='glyphicon glyphicon-log-in'></span> Login
+                </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,65 @@
+<h1>Books search</h1>
+
+<p>There you could search publisher books.</p>
+
+<form class="row">
+    <div class="form-group col-lg-6" >
+        <input class="form-control" name="author" [(ngModel)]="currentFilter.author" placeholder="Author" />
+    </div>
+    <div class="form-group col-lg-6">
+        <input class="form-control" name="title" [(ngModel)]="currentFilter.title" placeholder="Title" />
+    </div>
+    <div class="form-group col-lg-6">
+        <input class="form-control" name="description" [(ngModel)]="currentFilter.description" placeholder="Description" />
+    </div>
+    <div class="form-group col-lg-6">
+        <input class="form-control" name="publisher" [(ngModel)]="currentFilter.publisher" placeholder="Publisher" />
+    </div>
+    <button type="submit" class="btn btn-default" (click)="reloadData()">Search</button>
+</form>
+
+<p *ngIf="!pagedBoooks"><em>Loading...</em></p>
+
+<div *ngIf="pagedBoooks">
+    <h2>Total Items found {{pagedBoooks.totalItems}}</h2>
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            <li class="previous {{pagedBoooks.currentPage == 0 ? 'disabled' : ''}}"><a (click)="loadPage(pagedBoooks.currentPage - 1)">Previous</a></li>
+            <li *ngFor="let page of this.pageNumbers" class="{{page == (pagedBoooks.currentPage + 1) ? 'disabled' : ''}}">
+                <a (click)="loadPage(page- 1)">{{page}}</a>
+            </li>
+            <li class="next  {{pagedBoooks.currentPage >= (pagedBoooks.totalPages-1) ? 'disabled' : ''}}"><a  class="cursor-pointer" (click)="loadPage(pagedBoooks.currentPage + 1)">Next</a></li>
+        </ul>
+    </nav>
+    <table class='table  table-striped'>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Publisher</th>
+                <th>Authors</th>
+                <th>Description</th>
+                <th>Demand</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of pagedBoooks.items">
+                <td>{{ item.title }}</td>
+                <td>{{ item.publisher }}</td>
+                <td>
+                    <ul>
+                        <li *ngFor="let author of item.authors" >
+                            {{ author }}
+                        </li>
+                    </ul>
+                </td>
+                <td>{{ item.description }}</td>
+                <td>
+                    <a *ngIf="!booksService.isRequested(item.id)" (click)="booksService.addUserDemand(item.id)">Request</a>
+                    <a *ngIf="booksService.isRequested(item.id)" (click)="booksService.removeUserDemand(item.id)">Cancel</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+

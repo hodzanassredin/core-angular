@@ -1,0 +1,34 @@
+<h1>Requested books</h1>
+
+<p *ngIf="!books"><em>Loading...</em></p>
+<div *ngIf="books">
+    <h2>Total Items found {{books.length}}</h2>
+
+    <table class='table  table-striped'>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Publisher</th>
+                <th>Authors</th>
+                <th>Description</th>
+                <th>Demand</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of books">
+                <td>{{ item.title }}</td>
+                <td>{{ item.publisher }}</td>
+                <td>
+                    <ul>
+                        <li *ngFor="let author of item.authors">
+                            {{ author }}
+                        </li>
+                    </ul>
+                </td>
+                <td>{{ item.description }}</td>
+                <td><a (click)="remove(item.id)">Cancel</a></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
