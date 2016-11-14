@@ -22,6 +22,7 @@ ToDo:
 5. Remove mongo api from repositories and entities
 6. add tests
 7. More correct angular js modularization. Remove data loading from ctors.
+8. Password hashing
 
 Steps to run
 
