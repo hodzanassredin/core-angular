@@ -19,10 +19,9 @@ ToDo:
 2. Code cleanup
 3. add redux.js
 4. https
-5. Remove mongo api from repositories and entities
-6. add tests
+5. Password hashing
+6. Tests
 7. More correct angular js modularization. Remove data loading from ctors.
-8. Password hashing
 
 Steps to run
 
