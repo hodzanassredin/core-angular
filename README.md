@@ -26,35 +26,25 @@ Steps to run
 1. Install dotnet core: https://www.microsoft.com/net/core
 2. Install latest nodejs and npm: https://nodejs.org/en/download/
 3. Change mongo db connection string in .\Source\Books\appsettings.json
-
-```
-        Current value:
-            "ConnectionStrings": {
-                "DefaultConnection": "mongodb://localhost:27017/Crossover"
-            },
-```
-
+	'''
+	        Current value:
+	            "ConnectionStrings": {
+	                "DefaultConnection": "mongodb://localhost:27017/DemoDb"
+	            },
+	'''
 
 4. Open commandline and run:
-
-```
-    cd .\Source\Books
-    dotnet restore
-    cd ..\Books.Domain
-    dotnet restore
-    cd ..\Books
-    npm install
-    dotnet run --configuration Release
-```
-
+	'''
+	    cd .\Source\Books
+	    dotnet restore
+	    cd ..\Books.Domain
+	    dotnet restore
+	    cd ..\Books
+	    npm install
+	    dotnet run --configuration Release
+	'''
 
 5. Open browser: http://localhost:5000/
-
-
-        
- 
-
-
 
 
         
