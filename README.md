@@ -12,6 +12,7 @@ This is a demo app which shows how to use together:
 Source based on [JavaScriptServices](https://github.com/aspnet/JavaScriptServices)
 
 Work in progress.
+
 ToDo:
 
 1. Logging
@@ -25,7 +26,9 @@ ToDo:
 Steps to run
 
 Install dotnet core: https://www.microsoft.com/net/core
+
 Install latest nodejs and npm: https://nodejs.org/en/download/
+
 Change mongo db connection string in .\Source\Books\appsettings.json
 
 
